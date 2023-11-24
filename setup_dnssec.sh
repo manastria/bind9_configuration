@@ -24,6 +24,10 @@ fi
 chown bind:bind "$ZONE_DIR"
 chmod 750 "$ZONE_DIR"
 
+# Créez et configurez le répertoire pour les journaux
+mkdir -p /var/log/named/
+chown bind:bind /var/log/named/
+
 # Créez et configurez le répertoire pour les clés
 KEYS_DIR="/etc/bind/keys"
 mkdir -p "$KEYS_DIR" && cd "$KEYS_DIR"
