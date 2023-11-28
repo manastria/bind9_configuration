@@ -22,3 +22,11 @@ chmod 550 "$KEYS_DIR"
 # Créez et configurez le répertoire pour les journaux
 mkdir -p /var/log/named/
 chown bind:bind /var/log/named/
+
+# Permissions des fichiers de zone
+
+find "/etc/bind/zones" -type f -exec chmod 640 {} \; -type d -exec chmod 750 {} \; -exec chown bind:bind {} \;
+
+# Fichier de configuration
+chown -R bind:bind "/etc/bind/named.conf*"
+chmod -R 640 "/etc/bind/named.conf*"
