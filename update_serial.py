@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re
 import sys
 from datetime import datetime
@@ -10,11 +12,14 @@ def update_serial(zone_file_path):
     serial_regex = r'(\d{8})(\d{2})\s*;\s*Serial'
     new_zone_data = []
     serial_updated = False
+    old_serial = None
+    new_serial = None
 
     for line in zone_data:
         match = re.search(serial_regex, line)
         if match and not serial_updated:
             current_date, sequence = match.groups()
+            old_serial = f"{current_date}{sequence}"
             if current_date == today:
                 sequence = str(int(sequence) + 1).zfill(2)
             else:
@@ -29,7 +34,9 @@ def update_serial(zone_file_path):
     if serial_updated:
         with open(zone_file_path, 'w') as file:
             file.writelines(new_zone_data)
-        print(f"Serial number updated to {new_serial} in {zone_file_path}")
+        print(f"Serial number updated in {zone_file_path}")
+        print(f"Old Serial: {old_serial}")
+        print(f"New Serial: {new_serial}")
     else:
         print("Serial number not found in the file.")
 
