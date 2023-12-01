@@ -4,6 +4,10 @@
 NAMED_CONF="/etc/bind/named.conf"
 NAMED_CONF_LOG="/etc/bind/named.conf.log"
 
+# Créez et configurez le répertoire pour les journaux
+mkdir -p /var/log/named/
+chown bind:bind /var/log/named/
+
 # Vérifier si le fichier named.conf.log existe et le créer le cas échéant
 if [ ! -f "$NAMED_CONF_LOG" ]; then
     cat > "$NAMED_CONF_LOG" <<- EOF
@@ -14,7 +18,8 @@ if [ ! -f "$NAMED_CONF_LOG" ]; then
         };
         channel queries_log {
             file "/var/log/named/queries.log" versions 3 size 100m;
-            severity info;
+            severity debug 3;                 // Niveau de détail du log
+            print-category yes;               // Ajoute la catégorie de l'événement
             print-time yes;
         };
         channel dnssec_log {
